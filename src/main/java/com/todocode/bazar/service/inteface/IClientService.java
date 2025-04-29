@@ -1,14 +1,14 @@
 package com.todocode.bazar.service.inteface;
 
-import com.todocode.bazar.dto.ClientDto;
-import com.todocode.bazar.dto.UpdateClientDto;
+import com.todocode.bazar.dto.response.ClientResponseDto;
+import com.todocode.bazar.dto.request.ClientRequestDto;
 
 import java.util.List;
 
 public interface IClientService {
-    public ClientDto addClient(UpdateClientDto updateClientDto);
-    public List<ClientDto> getAllClients();
-    public ClientDto getClientById(Long client_id);
-    public ClientDto updateClient(Long client_id, UpdateClientDto updateClientDto);
+    public ClientResponseDto addClient(ClientRequestDto clientRequestDto);
+    public List<ClientResponseDto> getAllClients();
+    public ClientResponseDto getClientById(Long client_id);
+    public ClientResponseDto updateClient(Long client_id, ClientRequestDto clientRequestDto);
     public void deleteClient(Long client_id);
 }

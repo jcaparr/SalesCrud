@@ -1,7 +1,7 @@
 package com.todocode.bazar.service.implementation;
 
-import com.todocode.bazar.dto.ProductDto;
-import com.todocode.bazar.dto.UpdateProductDto;
+import com.todocode.bazar.dto.request.ProductRequestDto;
+import com.todocode.bazar.dto.response.ProductResponseDto;
 import com.todocode.bazar.exception.AlreadyExist;
 import com.todocode.bazar.exception.NotFoundException;
 import com.todocode.bazar.model.Product;
@@ -20,55 +20,64 @@ public class ProductService implements IProductService {
     private final IProductRepository productRepository;
 
     @Override
-    public ProductDto addProduct(UpdateProductDto updateProductDto){
-        if (productRepository.existsByBrandAndName(updateProductDto.getBrand(), updateProductDto.getName())) {
-            throw new AlreadyExist("A product with brand: " + updateProductDto.getBrand()
-                    + " and name: " + updateProductDto.getName() + " already exists.");
+    public ProductResponseDto addProduct(ProductRequestDto productRequestDto) {
+        if (productRepository.existsByBrandAndName(productRequestDto.getBrand(), productRequestDto.getName())) {
+            throw new AlreadyExist("A product with brand: " + productRequestDto.getBrand()
+                    + " and name: " + productRequestDto.getName() + " already exists.");
         }
 
         Product productSaved = productRepository.save(
-                mapperUtils.mapDtoToEntity(updateProductDto, Product.class)
+                mapperUtils.mapDtoToEntity(productRequestDto, Product.class)
         );
 
-        return mapperUtils.mapEntityToDto(productSaved, ProductDto.class);
+        return mapperUtils.mapEntityToDto(productSaved, ProductResponseDto.class);
     }
 
     @Override
-    public List<ProductDto> getAllProducts(){
+    public List<ProductResponseDto> getAllProducts() {
         List<Product> productList = productRepository.findAll();
-        if(productList.isEmpty()){
+        if (productList.isEmpty()) {
             throw new NotFoundException("No products found");
         }
-        return mapperUtils.mapEntityListToDtoList(productList, ProductDto.class);
+        return mapperUtils.mapEntityListToDtoList(productList, ProductResponseDto.class);
     }
 
     @Override
-    public ProductDto getProductById(Long productCode){
+    public ProductResponseDto getProductById(Long productCode) {
         Product product = productRepository.findById(productCode)
-                .orElseThrow(()-> new NotFoundException("Product with id: " + productCode + " not found"));
+                .orElseThrow(() -> new NotFoundException("Product with id: " + productCode + " not found"));
 
-        return mapperUtils.mapEntityToDto(product, ProductDto.class);
+        return mapperUtils.mapEntityToDto(product, ProductResponseDto.class);
     }
 
     @Override
-    public ProductDto updateProduct(Long productCode, UpdateProductDto updateProductDto){
+    public ProductResponseDto updateProduct(Long productCode, ProductRequestDto productRequestDto) {
         Product product = productRepository.findById(productCode)
-                .orElseThrow(()-> new NotFoundException("Product with id: " + productCode + " not found"));
+                .orElseThrow(() -> new NotFoundException("Product with id: " + productCode + " not found"));
 
-        product.setCost(updateProductDto.getCost());
-        product.setName(updateProductDto.getName());
-        product.setBrand(updateProductDto.getBrand());
-        product.setAvailableQuantity(updateProductDto.getAvailableQuantity());
+        product.setCost(productRequestDto.getCost());
+        product.setName(productRequestDto.getName());
+        product.setBrand(productRequestDto.getBrand());
+        product.setAvailableQuantity(productRequestDto.getAvailableQuantity());
 
         productRepository.save(product);
-        return mapperUtils.mapEntityToDto(product, ProductDto.class);
+        return mapperUtils.mapEntityToDto(product, ProductResponseDto.class);
     }
 
     @Override
-    public void deleteProduct(Long productCode){
+    public void deleteProduct(Long productCode) {
         Product product = productRepository.findById(productCode)
-                .orElseThrow(()-> new NotFoundException("Product with id: " + productCode + " not found"));
+                .orElseThrow(() -> new NotFoundException("Product with id: " + productCode + " not found"));
 
         productRepository.deleteById(productCode);
+    }
+
+    @Override
+    public List<ProductResponseDto> getListByIds(List<Long> productIds) {
+        List<Product> productList = productRepository.findAllById(productIds);
+        if (productList.size() != productIds.size()) {
+            throw new NotFoundException("Some products are not found");
+        }
+        return mapperUtils.mapEntityListToDtoList(productList, ProductResponseDto.class);
     }
 }
