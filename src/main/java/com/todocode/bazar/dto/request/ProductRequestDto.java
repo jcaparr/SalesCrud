@@ -1,4 +1,4 @@
-package com.todocode.bazar.dto;
+package com.todocode.bazar.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UpdateProductDto {
+public class ProductRequestDto {
     @NotBlank(message = "The product name cannot be null")
     @Pattern(regexp="([A-Z]|[0-9])[\\s|[0-9]|A-Z|a-z|ñ|ó|í|á|é|ú|Á|Ó|É|Í|Ú]*$", message = "The product name must start with mayus")
     private String name;

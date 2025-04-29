@@ -1,16 +1,15 @@
-package com.todocode.bazar.dto;
+package com.todocode.bazar.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.validation.constraints.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+public class ProductResponseDto {
     private Long productCode;
     private String name;
     private String brand;
