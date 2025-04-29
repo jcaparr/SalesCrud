@@ -1,7 +1,7 @@
 package com.todocode.bazar.service.implementation;
 
-import com.todocode.bazar.dto.ClientDto;
-import com.todocode.bazar.dto.UpdateClientDto;
+import com.todocode.bazar.dto.request.ClientRequestDto;
+import com.todocode.bazar.dto.response.ClientResponseDto;
 import com.todocode.bazar.exception.AlreadyExist;
 import com.todocode.bazar.exception.NotFoundException;
 import com.todocode.bazar.model.Client;
@@ -21,54 +21,54 @@ public class ClientService implements IClientService {
     private final IClientRepository clientRepository;
 
     @Override
-    public ClientDto addClient(UpdateClientDto updateClientDto){
-        if(clientRepository.existsByDni(updateClientDto.getDni())){
-            throw new AlreadyExist("Already exist a client with dni: " + updateClientDto.getDni());
+    public ClientResponseDto addClient(ClientRequestDto clientRequestDto) {
+        if (clientRepository.existsByDni(clientRequestDto.getDni())) {
+            throw new AlreadyExist("Already exist a client with dni: " + clientRequestDto.getDni());
         }
         Client client = new Client();
-        client.setName(updateClientDto.getName());
-        client.setLastName(updateClientDto.getLastName());
-        client.setDni(updateClientDto.getDni());
+        client.setName(clientRequestDto.getName());
+        client.setLastName(clientRequestDto.getLastName());
+        client.setDni(clientRequestDto.getDni());
 
         clientRepository.save(client);
-        return mapperUtils.mapEntityToDto(client, ClientDto.class);
+        return mapperUtils.mapEntityToDto(client, ClientResponseDto.class);
     }
 
     @Override
-    public List<ClientDto> getAllClients(){
+    public List<ClientResponseDto> getAllClients() {
         List<Client> clientList = clientRepository.findAll();
-        if(clientList.isEmpty()){
+        if (clientList.isEmpty()) {
             throw new NotFoundException("No clients found");
         }
-        return mapperUtils.mapEntityListToDtoList(clientList, ClientDto.class);
+        return mapperUtils.mapEntityListToDtoList(clientList, ClientResponseDto.class);
     }
 
     @Override
-    public ClientDto getClientById(Long idClient){
+    public ClientResponseDto getClientById(Long idClient) {
         Client client = clientRepository.findById(idClient)
-                .orElseThrow(()-> new NotFoundException("No client found with id: " + idClient));
-        return mapperUtils.mapEntityToDto(client, ClientDto.class);
+                .orElseThrow(() -> new NotFoundException("No client found with id: " + idClient));
+        return mapperUtils.mapEntityToDto(client, ClientResponseDto.class);
     }
 
     @Override
-    public ClientDto updateClient(Long idClient, UpdateClientDto updateClientDto){
+    public ClientResponseDto updateClient(Long idClient, ClientRequestDto clientRequestDto) {
         Client clientBbdd = clientRepository.findById(idClient)
                 .orElseThrow(() -> new NotFoundException("No client found with id: " + idClient));
 
-        if (clientRepository.existsByDniAndIdNot(updateClientDto.getDni(), idClient)) {
-            throw new AlreadyExist("Already exist a client with dni: " + updateClientDto.getDni());
+        if (clientRepository.existsByDniAndIdNot(clientRequestDto.getDni(), idClient)) {
+            throw new AlreadyExist("Already exist a client with dni: " + clientRequestDto.getDni());
         }
 
-        clientBbdd.setName(updateClientDto.getName());
-        clientBbdd.setLastName(updateClientDto.getLastName());
-        clientBbdd.setDni(updateClientDto.getDni());
+        clientBbdd.setName(clientRequestDto.getName());
+        clientBbdd.setLastName(clientRequestDto.getLastName());
+        clientBbdd.setDni(clientRequestDto.getDni());
         clientRepository.save(clientBbdd);
 
-        return mapperUtils.mapEntityToDto(clientBbdd, ClientDto.class);
+        return mapperUtils.mapEntityToDto(clientBbdd, ClientResponseDto.class);
     }
 
     @Override
-    public void deleteClient(Long idClient){
+    public void deleteClient(Long idClient) {
         clientRepository.findById(idClient)
                 .orElseThrow(() -> new NotFoundException("No client found with id: " + idClient));
 
