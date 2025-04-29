@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> notFound(NotFoundException e){
+    public ResponseEntity<?> notFound(NotFoundException e) {
         ExceptionDto exceptionDTO = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDTO, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AlreadyExist.class)
-    public ResponseEntity<?> alreadyExist(AlreadyExist e){
+    public ResponseEntity<?> alreadyExist(AlreadyExist e) {
         ExceptionDto exceptionDTO = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDTO, HttpStatus.ALREADY_REPORTED);
     }
@@ -32,10 +32,10 @@ public class GlobalExceptionHandler {
         // Recolectamos los errores y los formateamos
         List<String> errors = result.getFieldErrors()
                 .stream()
-                .map(error -> "El campo '" + error.getField() + "' " + error.getDefaultMessage())
+                .map(error -> "The field '" + error.getField() + "' " + error.getDefaultMessage())
                 .collect(Collectors.toList());
 
         // Devolvemos un ResponseEntity con el código de estado 400 y los errores
-        return new ResponseEntity<>(new ErrorResponse("Datos inválidos", errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse("Invalid data", errors), HttpStatus.BAD_REQUEST);
     }
 }

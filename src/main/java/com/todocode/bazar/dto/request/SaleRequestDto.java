@@ -1,7 +1,5 @@
 package com.todocode.bazar.dto.request;
 
-import com.todocode.bazar.model.Client;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
@@ -17,13 +15,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaleRequestDto {
-    @NotBlank(message = "Date cannot be blank")
+    @NotNull(message = "Date cannot be blank")
     private LocalDate saleDate;
 
     @NotNull(message = "Total cannot be null")
     @PositiveOrZero(message = "The total must be positive or zero")
     private Double total;
 
-    private List<ProductRequestDto> productList;
-    private Client client;
+    @NotNull(message = "The list of products must not be null")
+    private List<Long> productsIds;
+
+    @NotNull(message = "The client id must not be null")
+    private Long client;
 }
