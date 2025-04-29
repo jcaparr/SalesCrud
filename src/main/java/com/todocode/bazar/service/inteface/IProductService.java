@@ -1,14 +1,20 @@
 package com.todocode.bazar.service.inteface;
 
-import com.todocode.bazar.dto.ProductDto;
-import com.todocode.bazar.dto.UpdateProductDto;
+import com.todocode.bazar.dto.request.ProductRequestDto;
+import com.todocode.bazar.dto.response.ProductResponseDto;
 
 import java.util.List;
 
 public interface IProductService {
-    public ProductDto addProduct(UpdateProductDto updateProductDto);
-    public List<ProductDto> getAllProducts();
-    public ProductDto getProductById(Long product_id);
-    public ProductDto updateProduct(Long product_id, UpdateProductDto updateProductDto);
+    public ProductResponseDto addProduct(ProductRequestDto productRequestDto);
+
+    public List<ProductResponseDto> getAllProducts();
+
+    public ProductResponseDto getProductById(Long product_id);
+
+    public ProductResponseDto updateProduct(Long product_id, ProductRequestDto productRequestDto);
+
     public void deleteProduct(Long product_id);
+
+    public List<ProductResponseDto> getListByIds(List<Long> productIds);
 }

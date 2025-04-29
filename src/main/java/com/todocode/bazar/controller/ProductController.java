@@ -1,7 +1,7 @@
 package com.todocode.bazar.controller;
 
-import com.todocode.bazar.dto.ProductDto;
-import com.todocode.bazar.dto.UpdateProductDto;
+import com.todocode.bazar.dto.response.ProductResponseDto;
+import com.todocode.bazar.dto.request.ProductRequestDto;
 import com.todocode.bazar.service.inteface.IProductService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,26 +19,26 @@ public class ProductController {
     private final IProductService productService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> addProduct(@Valid @RequestBody UpdateProductDto updateProductDto){
-        ProductDto createdProduct = productService.addProduct(updateProductDto);
+    public ResponseEntity<?> addProduct(@Valid @RequestBody ProductRequestDto productRequestDto){
+        ProductResponseDto createdProduct = productService.addProduct(productRequestDto);
         URI location = URI.create("/products/get" + createdProduct.getProductCode());
         return ResponseEntity.created(location).body(createdProduct);
     }
 
     @GetMapping("/get_all")
-    public ResponseEntity<List<ProductDto>> getAllProducts(){
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts(){
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/get/{productCode}")
-    public ResponseEntity<ProductDto> getProductById(@PathVariable Long productCode){
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long productCode){
         return ResponseEntity.ok(productService.getProductById(productCode));
     }
 
     @PutMapping("/update/{productCode}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long productCode,
-                                                    @Valid @RequestBody UpdateProductDto updateProductDto){
-        return ResponseEntity.ok(productService.updateProduct(productCode, updateProductDto));
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long productCode,
+                                                            @Valid @RequestBody ProductRequestDto productRequestDto){
+        return ResponseEntity.ok(productService.updateProduct(productCode, productRequestDto));
     }
 
     @DeleteMapping("/delete/{productCode}")

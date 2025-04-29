@@ -1,4 +1,4 @@
-package com.todocode.bazar.dto;
+package com.todocode.bazar.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ClientDto {
+public class ClientResponseDto {
     private Long id;
     private String name;
     private String lastName;
