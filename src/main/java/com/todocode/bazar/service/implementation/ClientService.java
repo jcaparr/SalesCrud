@@ -1,7 +1,7 @@
 package com.todocode.bazar.service.implementation;
 
-import com.todocode.bazar.dto.response.ClientResponseDto;
 import com.todocode.bazar.dto.request.ClientRequestDto;
+import com.todocode.bazar.dto.response.ClientResponseDto;
 import com.todocode.bazar.exception.AlreadyExist;
 import com.todocode.bazar.exception.NotFoundException;
 import com.todocode.bazar.model.Client;
@@ -21,8 +21,8 @@ public class ClientService implements IClientService {
     private final IClientRepository clientRepository;
 
     @Override
-    public ClientResponseDto addClient(ClientRequestDto clientRequestDto){
-        if(clientRepository.existsByDni(clientRequestDto.getDni())){
+    public ClientResponseDto addClient(ClientRequestDto clientRequestDto) {
+        if (clientRepository.existsByDni(clientRequestDto.getDni())) {
             throw new AlreadyExist("Already exist a client with dni: " + clientRequestDto.getDni());
         }
         Client client = new Client();
@@ -35,23 +35,23 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public List<ClientResponseDto> getAllClients(){
+    public List<ClientResponseDto> getAllClients() {
         List<Client> clientList = clientRepository.findAll();
-        if(clientList.isEmpty()){
+        if (clientList.isEmpty()) {
             throw new NotFoundException("No clients found");
         }
         return mapperUtils.mapEntityListToDtoList(clientList, ClientResponseDto.class);
     }
 
     @Override
-    public ClientResponseDto getClientById(Long idClient){
+    public ClientResponseDto getClientById(Long idClient) {
         Client client = clientRepository.findById(idClient)
-                .orElseThrow(()-> new NotFoundException("No client found with id: " + idClient));
+                .orElseThrow(() -> new NotFoundException("No client found with id: " + idClient));
         return mapperUtils.mapEntityToDto(client, ClientResponseDto.class);
     }
 
     @Override
-    public ClientResponseDto updateClient(Long idClient, ClientRequestDto clientRequestDto){
+    public ClientResponseDto updateClient(Long idClient, ClientRequestDto clientRequestDto) {
         Client clientBbdd = clientRepository.findById(idClient)
                 .orElseThrow(() -> new NotFoundException("No client found with id: " + idClient));
 
@@ -68,7 +68,7 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public void deleteClient(Long idClient){
+    public void deleteClient(Long idClient) {
         clientRepository.findById(idClient)
                 .orElseThrow(() -> new NotFoundException("No client found with id: " + idClient));
 
