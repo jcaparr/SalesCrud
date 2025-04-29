@@ -25,7 +25,7 @@ public class ClientController {
         return ResponseEntity.created(location).body(createdClient);
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/get_all")
     public ResponseEntity<List<ClientDto>> getAllClients(){
         return ResponseEntity.ok(clientService.getAllClients());
     }
