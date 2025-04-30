@@ -20,9 +20,16 @@ public class Sale {
     private Long saleCode;
     private LocalDate saleDate;
     private Double total;
-    @OneToMany
+    
+    @ManyToMany
+    @JoinTable(
+            name = "sale_product",
+            joinColumns = @JoinColumn(name = "sale_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private List<Product> productList;
-    @OneToOne
-    @JoinColumn(name = "idClient", referencedColumnName = "id")
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
 }
