@@ -1,13 +1,12 @@
 package com.todocode.bazar.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -22,4 +21,7 @@ public class Product {
     private String brand;
     private Double cost;
     private Double availableQuantity;
+
+    @ManyToMany(mappedBy = "productList")
+    private List<Sale> sales;
 }
