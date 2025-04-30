@@ -1,6 +1,10 @@
 package com.todocode.bazar.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.todocode.bazar.dto.response.ClientResponseDto;
+import com.todocode.bazar.dto.response.SaleSummaryDto;
+import com.todocode.bazar.model.Client;
+import com.todocode.bazar.model.Sale;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,4 +35,27 @@ public class MapperUtils {
                 .map(dto -> mapper.convertValue(dto, entityClass))
                 .collect(Collectors.toList());
     }
+
+    public ClientResponseDto clientToResponse(Client client) {
+        ClientResponseDto clientResponseDto = new ClientResponseDto();
+        clientResponseDto.setId(client.getId());
+        clientResponseDto.setName(client.getName());
+        clientResponseDto.setLastName(client.getLastName());
+        clientResponseDto.setDni(client.getDni());
+
+        List<SaleSummaryDto> saleSummaryDtoList = client.getSales().stream()
+                .map(this::toSaleSummaryDto).toList();
+
+        clientResponseDto.setSales(saleSummaryDtoList);
+        return clientResponseDto;
+    }
+
+    public SaleSummaryDto toSaleSummaryDto(Sale sale) {
+        SaleSummaryDto saleSummaryDto = new SaleSummaryDto();
+        saleSummaryDto.setSaleCode(sale.getSaleCode());
+        saleSummaryDto.setSaleDate(sale.getSaleDate());
+        saleSummaryDto.setTotal(sale.getTotal());
+        return saleSummaryDto;
+    }
+
 }

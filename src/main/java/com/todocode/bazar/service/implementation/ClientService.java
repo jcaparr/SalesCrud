@@ -29,9 +29,10 @@ public class ClientService implements IClientService {
         client.setName(clientRequestDto.getName());
         client.setLastName(clientRequestDto.getLastName());
         client.setDni(clientRequestDto.getDni());
+        client.setSales(List.of());
 
         clientRepository.save(client);
-        return mapperUtils.mapEntityToDto(client, ClientResponseDto.class);
+        return mapperUtils.clientToResponse(client);
     }
 
     @Override
@@ -40,14 +41,14 @@ public class ClientService implements IClientService {
         if (clientList.isEmpty()) {
             throw new NotFoundException("No clients found");
         }
-        return mapperUtils.mapEntityListToDtoList(clientList, ClientResponseDto.class);
+        return clientList.stream().map(mapperUtils::clientToResponse).toList();
     }
 
     @Override
     public ClientResponseDto getClientById(Long idClient) {
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(() -> new NotFoundException("No client found with id: " + idClient));
-        return mapperUtils.mapEntityToDto(client, ClientResponseDto.class);
+        return mapperUtils.clientToResponse(client);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class ClientService implements IClientService {
         clientBbdd.setDni(clientRequestDto.getDni());
         clientRepository.save(clientBbdd);
 
-        return mapperUtils.mapEntityToDto(clientBbdd, ClientResponseDto.class);
+        return mapperUtils.clientToResponse(clientBbdd);
     }
 
     @Override

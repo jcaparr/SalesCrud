@@ -6,16 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaleResponseDto {
+public class SaleSummaryDto {
     private Long saleCode;
     private LocalDate saleDate;
     private Double total;
-    private List<ProductResponseDto> productList;
-    private ClientSummaryDto client;
 }
